@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="shortcut icon" href="./favicon.ico">
+    <title>体质指数（BMI）计算器</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .bmi-table {
+            margin-top: 30px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .bmi-table th, .bmi-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .bmi-table th {
+            background-color: #f2f2f2;
+        }
+        .note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>体质指数（BMI）计算器</h1>
+        
+        <div class="input-group">
+            <label for="height">身高 (厘米):</label>
+            <input type="number" id="height" placeholder="请输入您的身高" min="1">
+        </div>
+        
+        <div class="input-group">
+            <label for="weight">体重 (公斤):</label>
+            <input type="number" id="weight" placeholder="请输入您的体重" min="1">
+        </div>
+        
+        <button onclick="calculateBMI()">计算BMI</button>
+        
+        <div id="result"></div>
+        
+        <table class="bmi-table">
+            <tr>
+                <th>BMI范围</th>
+                <th>体重状况</th>
+            </tr>
+            <tr>
+                <td>低于 18.5</td>
+                <td>偏瘦</td>
+            </tr>
+            <tr>
+                <td>18.5 - 23.9</td>
+                <td>正常</td>
+            </tr>
+            <tr>
+                <td>24.0 - 27.9</td>
+                <td>超重</td>
+            </tr>
+            <tr>
+                <td>28.0 及以上</td>
+                <td>肥胖</td>
+            </tr>
+        </table>
+        
+        <div class="note">
+            <p>注：BMI是身体质量指数的简称，计算公式为：体重(kg) / (身高(m) × 身高(m))</p>
+            <p>请注意，BMI仅供参考，不能完全代表健康状态，肌肉量、脂肪分布等因素也会影响实际健康状况。</p>
+        </div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            
+            if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+                alert("请输入有效的身高和体重数值！");
+                return;
+            }
+            
+            // 将厘米转换为米
+            const heightInMeter = height / 100;
+            
+            // 计算BMI
+            const bmi = weight / (heightInMeter * heightInMeter);
+            
+            // 保留一位小数
+            const bmiValue = bmi.toFixed(1);
+            
+            // 判断体重状况
+            let category = '';
+            if (bmi < 18.5) {
+                category = '偏瘦';
+            } else if (bmi >= 18.5 && bmi < 24) {
+                category = '正常';
+            } else if (bmi >= 24 && bmi < 28) {
+                category = '超重';
+            } else {
+                category = '肥胖';
+            }
+            
+            // 显示结果
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <h3>您的BMI结果</h3>
+                <p><strong>BMI值: ${bmiValue}</strong></p>
+                <p>体重状况: ${category}</p>
+            `;
+            resultDiv.style.display = 'block';
+            resultDiv.style.backgroundColor = '#eaf7ff';
+            resultDiv.style.borderLeft = '4px solid #3498db';
+        }
+    </script>
+</body>
+</html>
